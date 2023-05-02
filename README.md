@@ -4,6 +4,8 @@
 
 ### cleanup_and_disable_auto_stats_advisor_task.ksh - Korn shell script that cleans up the SYSAUX tablespace and the WRI$_ADV_OBJECTS table under the SYS schema.  This is based on this Oracle Document: SYSAUX Tablespace Grows Rapidly After Upgrading Database to 12.2.0.1 or Above Due To Statistics Advisor (Doc ID 2305512.1)
 
+### fill_in_host_info_to_oracle_db_checklist.py - used with an XML formatted Oracle Database STIG checklist for filling in the hostname information directly into the ckl file (XML formatted).
+
 #
 For those of you Oracle DBAs who work as DoD contractors and need to expedite your Oracle Database STIG related activities, these tools are designed to help you speed up your work.  These were developed and tested with the latest release of the Oracle Database 12c STIG checklist that was released in January of 2023.
 
