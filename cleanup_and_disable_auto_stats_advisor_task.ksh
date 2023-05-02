@@ -338,7 +338,7 @@ check_for_OS_authentication
 # deploy cleanup for the SYS.WRI$_ADV_OBJECTS table and removal of the AUTO_STATS_ADVISOR_TASK advisor task
 
 $ORACLE_HOME/bin/sqlplus -S "/ as sysdba" << CLEANUP
-set feedback off heading on verify off trim on pages 2000 linesize 200;
+set feedback on heading on verify off trim on pages 2000 linesize 200;
 
 show con_name;
 select SYSTIMESTAMP FROM DUAL;
@@ -573,7 +573,7 @@ if [[ $PDB_OPEN_CHECK = "OPEN" && $PDB_STATE_CHECK = "READ WRITE" ]];then
 # cleanup SYS.WRI$_ADV_OBJECTS table and disable AUTO_STATS_ADVISOR_TASK for pdb(s) here
 
 $ORACLE_HOME/bin/sqlplus -S "/ as sysdba" << CLEANUP
-set feedback off heading on verify off trim on pages 2000 linesize 200;
+set feedback on heading on verify off trim on pages 2000 linesize 200;
 alter session set container=$PDB_ORACLE_SID;
 
 show con_name;
