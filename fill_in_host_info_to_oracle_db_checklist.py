@@ -15,6 +15,7 @@
 # Instructions:   Load the XML formatted ckl file for the Oracle Database 12c checklist on to your OS and then use this tool to fill in the HOST_NAME and HOST_IP fields.
 #                 This script needs to be run on the same Oracle Database server where you are doing the STIG checks, so that the correct values are loaded to the XML file.
 #
+# Revisions:      3MAY2023 - gave it a detectable non-zero exit code if looking for errors via exit code in a shell script
 # Runtime:        Should be less than 3 seconds in almost every case.
 #
 
@@ -27,6 +28,8 @@ MIN_PYTHON_VERSION = (3, 4)  #set your minimum Python version here
 if sys.version_info < MIN_PYTHON_VERSION:
     print(f"Error: Python {MIN_PYTHON_VERSION[0]}.{MIN_PYTHON_VERSION[1]} or higher is required to run this script.")
     sys.exit(1)
+	
+error_detected = False
 
 # Define the command line argument for the input XML file
 parser = argparse.ArgumentParser()
@@ -76,8 +79,15 @@ if modified_host_name_elem.text == hostname:
     print(f"HOST_NAME field in {file_to_open} was correctly populated")
 else:
     print(f"ERROR: HOST_NAME field in {file_to_open} was not correctly populated")
+    error_detected=True
 
 if modified_host_ip_elem.text == ip_address:
     print(f"HOST_IP field in {file_to_open} was correctly populated")
 else:
     print(f"ERROR: HOST_IP field in {file_to_open} was not correctly populated")
+    error_detected=True
+
+if error_detected:
+    sys.exit(1)
+else:
+    sys.exit(0)
