@@ -56,7 +56,7 @@ if not (args.finding_details or args.comments or args.status):
 # Check that no file is specified with -f or --loadfromfile if the -s or --status option is used
 if args.status and args.loadfromfile:
     cl_parser.error("\n\nError: Do not specify a file with the -f or --loadfromfile option when using the -s or --status option.")
-	
+
 # Check that only one of the -d, -c, and -s options has been specified
 if sum([bool(args.finding_details), bool(args.comments), bool(args.status)]) != 1:
     cl_parser.error("\n\nError: Only one of the following options can be specified: -d/--finding_details, -c/--comments, or -s/--status")
