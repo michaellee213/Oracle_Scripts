@@ -6,6 +6,8 @@
 
 ### fill_in_host_info_to_oracle_db_checklist.py - used with an XML formatted Oracle Database STIG checklist for filling in the hostname information directly into the ckl file (XML formatted).
 
+### manual_load_STIG_checklist.py - used for direct loading data into the XML formatted Oracle Database STIG checklist for filling in either the Comments, Finding Details, or Status for a STIG ID(Rule_Ver).  Like other scripts, it uses the lxml Python module.  This can be used for building a larger script that will automatically fill in the entire checklist.  It can also be used for manual corrections or additions as needed for a STIG ID.
+
 #
 For those of you Oracle DBAs who work as DoD contractors and need to expedite your Oracle Database STIG related activities, these tools are designed to help you speed up your work.  These were developed and tested with the latest release of the Oracle Database 12c STIG checklist that was released in January of 2023.
 
