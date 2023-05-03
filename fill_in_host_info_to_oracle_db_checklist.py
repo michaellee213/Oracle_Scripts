@@ -32,7 +32,7 @@ MIN_PYTHON_VERSION = (3, 4)  #set your minimum Python version here
 if sys.version_info < MIN_PYTHON_VERSION:
     print(f"Error: Python {MIN_PYTHON_VERSION[0]}.{MIN_PYTHON_VERSION[1]} or higher is required to run this script.")
     sys.exit(1)
-	
+
 error_detected = False
 
 # Define the command line argument for the input XML file
