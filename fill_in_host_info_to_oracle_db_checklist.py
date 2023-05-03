@@ -22,7 +22,11 @@
 import argparse
 import socket
 import sys
-from lxml import etree
+try:
+    from lxml import etree
+except ImportError:
+    print("Error: The 'lxml' module is not available. Please install it using 'pip3 install lxml' or 'pip install lxml' and try again.")
+    sys.exit(1)
 
 MIN_PYTHON_VERSION = (3, 4)  #set your minimum Python version here
 if sys.version_info < MIN_PYTHON_VERSION:
