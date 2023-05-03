@@ -18,10 +18,14 @@
 # Revisions:     20APR2023 - Added format check if the -c option is used for a CCI ID.
 #
 
-from lxml import etree as ET
 import os
 import re
 import sys
+try:
+    from lxml import etree as ET
+except ImportError:
+    print("Error: The 'lxml' module is not available. Please install it using 'pip3 install lxml' or 'pip install lxml' and try again.")
+    sys.exit(1)
 from argparse import ArgumentParser
 import argparse
 
