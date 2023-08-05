@@ -280,7 +280,7 @@ usage (){
   echo " -s, --schemas            OPTIONAL: specify schema to export; don't use with -t"
   echo "                                    more than 1 can be specified: example: -s SCHEMA1,SCHEMA2"
   echo ""                       
-  echo " -t, --tables             OPTIONAL: specify table(S) in schema to export; don't use with -s"
+  echo " -t, --tables             OPTIONAL: specify table(s) in schema to export; don't use with -s"
   echo "                                    must be in format of SCHEMA.TABLE"
   echo "                                    must be in format of expdp command line for TABLES=; e.g. \" -s SCHEMA1.TABLE1,SCHEMA1,TABLE2\"" 
   echo ""                       
