@@ -40,7 +40,7 @@
 #               :set ff=unix
 #               :wq
 #
-# Runtime:      As of 20APR2022, the runtime for this job is less than 1 hour.
+# Runtime:      As of 5AUG2023, the runtime for this job is less than 1 hour.
 #
 # Size:         The produced log files won't accumulate since they are overwritten on every execution of this script.
 #########################################################################################
