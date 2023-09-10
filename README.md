@@ -35,3 +35,7 @@ And can give you the equivalent values as output.
 &nbsp;&nbsp;&nbsp;&nbsp; Related Oracle documentation: Oracle Access Manager (OAM) Purging Audit Store Data Where Is The "auditDataPurge.sql" Script Located (Doc ID 2651574.1)
 
 &nbsp;&nbsp;&nbsp;&nbsp; Oracle Access Manager(OAM 11g): What is the Automatic Archiving and Purging Functionality of Audit Data From Database (Doc ID 2255281.1)
+
+### listener_log_xml_filter.py - Python script that will load the XML formatted Oracle Database listener log into memory and can filter entries on either host_ip or pid.  It can also show recent errors by parsing the log for either "TNS-" or "Error".
+
+### listener_log_xml_filter_low_memory_version.py - Python script that will parse the XML formatted Oracle Database listener log and can filter on either host_ip or pid ( slightly faster than using args.file.read() ).  It can also show recent errors by parsing the log for either "TNS-" or "Error".  Use this version if you have a large listener log to parse/filter.

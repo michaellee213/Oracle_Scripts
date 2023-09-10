@@ -8,7 +8,10 @@
 #                        To list out all unique host addresses/ip addresses, execute this:    ./listener_log_xml_filter.py -f <xml listener log to read> --list-hosts
 #                        To show all recent errors in the last (default is 24 hours):         ./listener_log_xml_filter.py -f <xml listener log to read> --recent-errors
 #                        To show all recent errors with a time override for the default:      ./listener_log_xml_filter.py -f <xml listener log to read> --recent-errors --error-hours 5  # example for 5 hours
+<<<<<<< HEAD
 #                        See help menu for additional filters (but these are the most used)
+=======
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
 #
 # Revisions:    11SEP2023 - first draft
 #
@@ -19,7 +22,11 @@
 #
 #               This script was tested on XML formatted listener logs in Oracle Database 21c.
 #
+<<<<<<< HEAD
 # TODO:         Might add additional filter for time later
+=======
+# TODO:         Might add additional filters later like org_id, comp_id, type, host_id, and even time
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
 #
 
 import argparse
@@ -65,7 +72,11 @@ def process_msg(msg_content):
 
     return log_time, host_addr, pid, txt, org_id, comp_id, msg_type, level, host_id
 
+<<<<<<< HEAD
 def print_msgs_from_xml(xml_content, host_addr_filter=None, pid_filter=None, org_id_filter=None, comp_id_filter=None, type_filter=None, host_id_filter=None, recent_errors=False, error_hours=24):
+=======
+def print_msgs_from_xml(xml_content, host_addr_filter=None, pid_filter=None, recent_errors=False, error_hours=24):
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
     for fragment in xml_content.split("<msg"):
         if not fragment.strip():
             continue
@@ -78,6 +89,7 @@ def print_msgs_from_xml(xml_content, host_addr_filter=None, pid_filter=None, org
             if pid_filter and pid != pid_filter:
                 continue
 
+<<<<<<< HEAD
             # Filter by org_id, comp_id, type, and host_id
             if org_id_filter and org_id != org_id_filter:
                 continue
@@ -88,6 +100,8 @@ def print_msgs_from_xml(xml_content, host_addr_filter=None, pid_filter=None, org
             if host_id_filter and host_id != host_id_filter:
                 continue
 
+=======
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
             if recent_errors:
                 # Check for error strings first.
                 if "TNS-" not in txt and "Error" not in txt:
@@ -121,6 +135,7 @@ def list_unique_host_addrs(xml_content):
         print(addr)
 
 def main():
+<<<<<<< HEAD
     formatter_class = lambda prog: argparse.HelpFormatter(prog, max_help_position=30, width=120)
     parser = argparse.ArgumentParser(description="Filter and print XML messages from the Oracle Database XML formatted listener log", formatter_class=formatter_class)
     parser.add_argument('-f', '--file', type=argparse.FileType('r'), required=True, help='Path to the XML formatted listener log')
@@ -130,12 +145,23 @@ def main():
     parser.add_argument('-o', '--org_id', type=str, help='Filter by org_id')
     parser.add_argument('-p', '--pid', type=str, help='Filter by pid')
     parser.add_argument('-t', '--type', type=str, help='Filter by message type')
+=======
+    parser = argparse.ArgumentParser(description="Filter and print XML messages from the XML formatted listener log")
+    parser.add_argument('-f', '--file', type=argparse.FileType('r'), required=True, help='Path to the XML formatted listener log')
+    parser.add_argument('-a', '--host_addr', type=str, help='Filter by host address')
+    parser.add_argument('-p', '--pid', type=str, help='Filter by pid')
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
     parser.add_argument('--list-hosts', '-lh', action='store_true', help='List all unique host addresses from the XML file')
     parser.add_argument('--recent-errors', '-re', action='store_true', help='Show only recent errors from the XML file')
     parser.add_argument('--error-hours', '-eh', type=int, default=24, help='Hours to look back for recent errors, default is 24 hours')
     args = parser.parse_args()
+<<<<<<< HEAD
 
     # Check the file size
+=======
+	
+	# Check the file size
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
     file_size = os.path.getsize(args.file.name)
     if file_size > (1 << 30):  # 1 GB in bytes
         print("Warning: The file size is over 1 GB. Processing might take some time.")
@@ -149,6 +175,7 @@ def main():
     if args.list_hosts:
         list_unique_host_addrs(xml_content)
     elif args.recent_errors:
+<<<<<<< HEAD
         print_msgs_from_xml(xml_content, args.host_addr, args.pid, args.org_id, args.comp_id, args.type, args.host_id, True, args.error_hours)
     else:
         print_msgs_from_xml(xml_content, args.host_addr, args.pid, args.org_id, args.comp_id, args.type, args.host_id)
@@ -159,3 +186,11 @@ if __name__ == '__main__':
     except BrokenPipeError:
         sys.stdout.close()  # Close stdout to handle a pipe properly; in case "head" or "tail" are used in the shell
         os._exit(0)         # Exit without error traceback
+=======
+        print_msgs_from_xml(xml_content, args.host_addr, args.pid, True, args.error_hours)
+    else:
+        print_msgs_from_xml(xml_content, args.host_addr, args.pid)
+
+if __name__ == '__main__':
+    main()
+>>>>>>> 093bf1853111ab38b432330864bbd30c2a124ea3
