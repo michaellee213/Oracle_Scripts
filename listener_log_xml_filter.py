@@ -139,12 +139,11 @@ def main():
     if args.error_hours != 24 and not args.recent_errors:
         parser.error("--error-hours requires --recent-errors to be specified.")
 
-    # Ensure that only --list-hosts is specified
+    # Ensure that only --list-hosts and --file are specified
     if args.list_hosts:
-        for arg, value in vars(args).items():
-            if arg != 'list_hosts' and value:
-                parser.error("--list-hosts should not be used with any other arguments.")
-    
+        if args.file is None:
+            parser.error("--list-hosts should only be used with the --file argument and no other arguments.")
+        
     # Check the file size
     file_size = os.path.getsize(args.file.name)
     if file_size > (1 << 30):  # 1 GB in bytes

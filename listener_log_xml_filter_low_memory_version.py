@@ -173,15 +173,14 @@ def main():
     parser.add_argument('--error-hours', '-eh', type=int, default=24, help='Hours to look back for recent errors, default is 24 hours')
     args = parser.parse_args()
 
-    # Check for --error-hours without --recent-errors
+# Check for --error-hours without --recent-errors
     if args.error_hours != 24 and not args.recent_errors:
         parser.error("--error-hours requires --recent-errors to be specified.")
 
-    # Ensure that only --list-hosts is specified
+    # Ensure that only --list-hosts and --file are specified
     if args.list_hosts:
-        for arg, value in vars(args).items():
-            if arg != 'list_hosts' and value:
-                parser.error("--list-hosts should not be used with any other arguments.")
+        if args.file is None:
+            parser.error("--list-hosts should only be used with the --file argument and no other arguments.")
 
     # Check the file size
     file_size = os.path.getsize(args.file.name)
