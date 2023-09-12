@@ -139,10 +139,18 @@ def main():
     if args.error_hours != 24 and not args.recent_errors:
         parser.error("--error-hours requires --recent-errors to be specified.")
 
-    # Ensure that only --list-hosts and --file are specified
     if args.list_hosts:
-        if args.file is None:
-            parser.error("--list-hosts should only be used with the --file argument and no other arguments.")
+        filtered_args = {arg_name: arg_value for arg_name, arg_value in vars(args).items() if arg_name not in ["file", "list_hosts"]}
+    
+    # Check if any other arguments have non-default values. If yes, raise the error.
+    unwanted_values = [
+        (arg_name, arg_value) for arg_name, arg_value in filtered_args.items() 
+        if (arg_value is not None and arg_value != 24 and not (arg_name == "recent_errors" and arg_value is False))
+    ]
+    
+    if unwanted_values:
+        print(f"DEBUG: Unwanted arguments: {unwanted_values}")
+        parser.error("--list-hosts should only be used with the --file argument and no other arguments.")
         
     # Check the file size
     file_size = os.path.getsize(args.file.name)
