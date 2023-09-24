@@ -8,6 +8,8 @@
 # use python 3.4 or above due to use of argparse.FileType
 # as of 16AUG2022, the "additional" attention type has not been seen in any example attention log, so hasn't been tested properly
 #
+# Revisions: 24SEP2023 - fixed broken pipe error - for if user wants to pipe to head, tail, grep, etc...
+#
  
 import sys
 import json
@@ -86,5 +88,9 @@ else:
     print('Printing all attention log entries.')
     # the above line can be replaced with "pass" if that line is not desired in the output.
     
-# call function to dial in on desired events/attention log entries
-parse_oracle_json_attention_log(attention_log_contents)
+try:
+    # call function to dial in on desired events/attention log entries
+    parse_oracle_json_attention_log(attention_log_contents)
+except BrokenPipeError:
+    # Ignore the broken pipe error
+    pass
