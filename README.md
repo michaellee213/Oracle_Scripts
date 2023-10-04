@@ -26,6 +26,8 @@ And can give you the equivalent values as output.
 
 #
 
+### check_for_db_datapatch.ksh - a ksh script that will check what patch level the Oracle Database home ($ORACLE_HOME) is and compare it to the dba_registry_sqlpatch view.  If it doesn't match, then that is reported.  Optionally all PDBS can be checked and, if desired, "datapatch -verbose" can be run automatically.
+
 ### cleanup_and_disable_auto_stats_advisor_task.ksh - Korn shell script that cleans up the SYSAUX tablespace and the WRI$_ADV_OBJECTS table under the SYS schema.  This is based on this Oracle Document: SYSAUX Tablespace Grows Rapidly After Upgrading Database to 12.2.0.1 or Above Due To Statistics Advisor (Doc ID 2305512.1).  ONLY RUN THIS ONCE.  MAKE SURE TO TEST BEFORE RUNNING.
 
 ### datapump_export.ksh - script that uses expdp to export either full database, any selection of schemas, or any selection of tables (if exportable)
