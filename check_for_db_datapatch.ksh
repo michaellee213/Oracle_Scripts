@@ -289,6 +289,8 @@ case $ERROR_CODE in
   2 ) ERROR_TEXT="FAILED: ${0} - Container database is not OPEN on ${HOST}";;
   3 ) ERROR_TEXT="WARNING: ${0} - The $2 PDB is not in an OPEN or MOUNTED state.  The check was skipped.";;
   4 ) ERROR_TEXT="WARNING: ${0} - The $2 PDB open_mode check did not pass.  It is not in either the MOUNTED, READ ONLY, or READ WRITE condition.  The check was skipped.";;
+  5 ) ERROR_TEXT="FAILED: ${0} - One or more databases on ${HOST} have not had datapatch run after database patching has occurred.";;
+  6 ) ERROR_TEXT="FAILED: ${0} - One or more databases on ${HOST} have not had datapatch run after database patching has occurred, but datapatch was run automatically.";;
 esac
 
 ERROR_SUBJECT="Post OS patching Error for $DATABASE on $HOST: ${ERROR_TEXT}"
@@ -521,7 +523,15 @@ fi
 done
 
 if (( $error_count > 0 ));then
-  echo "Errors were encountered on ${HOST}.  Some checks FAILED."
+  if [[ -z $correct_datapatch_boolean ]];then
+    echo "Errors were encountered on ${HOST}.  Some checks FAILED for this ORACLE_HOME patch level matching what is in dba_registry_sqlpatch."
+	echo "ORACLE_HOME=${ORACLE_HOME}"
+    handle_error 5
+  else
+    echo "Errors were encountered on ${HOST}.  Some checks FAILED for this ORACLE_HOME patch level matching what is in dba_registry_sqlpatch, but \"datapatch -verbose\" was run automatically."
+	echo "ORACLE_HOME=${ORACLE_HOME}"
+	handle_error 6
+  fi
 else
   echo "No errors were encountered on ${HOST}.  All checks for this ORACLE_HOME patch level matching what is in dba_registry_sqlpatch PASSED"
 fi
