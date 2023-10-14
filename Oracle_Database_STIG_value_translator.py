@@ -18,6 +18,7 @@
 #                          To view all of the STIG ID values for a CCI, then execute this: ./Oracle_Database_STIG_value_translator.py -f <ckl_file> -c <CCI> -t stig
 #
 # Revisions:      20APR2023 - Added format check if the -c option is used for a CCI ID.
+#                 14OCT2023 - modified the command line options to be a little easier to use when using the mandatory -t option.
 #
 
 import re
@@ -38,14 +39,18 @@ if sys.version_info < MIN_PYTHON_VERSION:
 cl_parser = argparse.ArgumentParser(description='Oracle Database <STIG ID|CCI|Rule ID|Rule Name|Vuln ID> lister/mapper viewer')
 cl_parser.usage = '''This program translates any of the following values to its equivalent.  <STIG ID>, <CCI ID>, <Rule ID>, <Rule Name>, <Vuln ID>
 
- Usage: Oracle_Database_STIG_value_translator.py -f <ckl file> < -s <STIG ID> or -c <CCI> or -ri <Rule ID> or -rn <Rule Name> or -v <Vuln ID> > -t <STIG ID|CCI|Rule ID|Rule Name|Vuln ID>'''
+ Usage: Oracle_Database_STIG_value_translator.py -f <ckl file> < -s <STIG ID> or -c <CCI> or -ri <Rule ID> or -rn <Rule Name> or -v <Vuln ID> > -t <STIG ID|CCI|Rule ID|Rule Name|Vuln ID>
+       
+ Note: when using -t and the desired value type to convert to, the use of double quotes around the type might be needed.
+ Example: ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "vuln id"
+          ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "stig id"'''
 cl_parser.add_argument('-f', '--file', default=sys.stdin, type=argparse.FileType('r'), required=True, help='Specify location of XML formatted STIG ckl file with the full path and filename.')
 cl_parser.add_argument('-c', '--cci', required=False, type=str.upper, help='Specify value of CCI.')
 cl_parser.add_argument('-ri', '--rule_id', required=False, type=str, help='Specify value of Rule ID.')
 cl_parser.add_argument('-rn', '--rule_name', required=False, type=str.upper, help='Specify value of Rule Name.')
-cl_parser.add_argument('-s', '--stig', required=False, type=str.upper, help='Specify value of STIG ID.')
-cl_parser.add_argument('-v', '--vul', required=False, type=str.upper, help='Specify value of Vul ID.')
-cl_parser.add_argument('-t', '--translate_to', required=True, type=str.lower, choices=['cci', 'rule_id', 'rule_name', 'stig', 'vul'], help='Specify value of the equivalent value to translate to.')
+cl_parser.add_argument('-s', '--stig', required=False, type=str.upper, help='Specify value of STIG ID.', metavar='STIG/STIG ID')
+cl_parser.add_argument('-v', '--vul', required=False, type=str.upper, help='Specify value of Vul ID.', metavar='VUL/VULN/Vuln ID')
+cl_parser.add_argument('-t', '--translate_to', required=True, type=str.lower, choices=['cci', 'rule_id', 'rule id', 'rule_name', 'rule name', 'stig', 'stig id', 'vul', 'vuln', 'vuln id'], help='Specify value of the equivalent value to translate to.')
 
 args = cl_parser.parse_args()
 
@@ -78,17 +83,30 @@ def show_nothing_to_translate_error_and_exit(error_message):
 def is_arg_specified(arg):
     return arg is not None and arg != ''
 
-# check to make sure that the 1 specified optional argument is not the same value type as the value to translate to
-if args.translate_to == 'cci' and is_arg_specified(args.cci):
-    show_nothing_to_translate_error_and_exit(f"'{args.cci}' should not be specified when 'translate_to' or -t is set to 'cci'.")
-if args.translate_to == 'rule_id' and is_arg_specified(args.rule_id):
-    show_nothing_to_translate_error_and_exit(f"'{args.rule_id}' should not be specified when 'translate_to' or -t is set to 'rule_id'.")
-if args.translate_to == 'rule_name' and is_arg_specified(args.rule_name):
-    show_nothing_to_translate_error_and_exit(f"'{args.rule_name}' should not be specified when 'translate_to' or -t is set to 'rule_name'.")
-if args.translate_to == 'stig' and is_arg_specified(args.stig):
-    show_nothing_to_translate_error_and_exit(f"'{args.stig}' should not be specified when 'translate_to' or -t is set to 'stig'.")
-if args.translate_to == 'vul' and is_arg_specified(args.vul):
-    show_nothing_to_translate_error_and_exit(f"'{args.vul}' should not be specified when 'translate_to' or -t is set to 'vul'.")
+# Convert multi-word choices to single-word equivalents for easy comparison
+translate_to_equivalents = {
+    'rule id': 'rule_id',
+    'rule name': 'rule_name',
+    'stig id': 'stig',
+    'vuln': 'vul',
+    'vuln id': 'vul'
+}
+
+# If the choice is a multi-word string, get its single-word equivalent
+args.translate_to = translate_to_equivalents.get(args.translate_to, args.translate_to)
+
+# Define a dictionary to map 'translate_to' choices to their corresponding args
+args_to_check = {
+    'cci': args.cci,
+    'rule_id': args.rule_id,
+    'rule_name': args.rule_name,
+    'stig': args.stig,
+    'vul': args.vul
+}
+
+# Check if the same arg is being specified as the 'translate_to' choice
+if is_arg_specified(args_to_check[args.translate_to]):
+    show_nothing_to_translate_error_and_exit(f"'{args_to_check[args.translate_to]}' should not be specified when 'translate_to' or -t is set to '{args.translate_to}'.")
 
 file_to_open = args.file.name
 xml_filename = file_to_open
@@ -170,7 +188,7 @@ if args.translate_to == 'rule_name':
         rule_name = vuln.xpath("STIG_DATA[VULN_ATTRIBUTE='Group_Title']/ATTRIBUTE_DATA")[0].text
         print(rule_name)
 
-if args.translate_to == 'vul':
+if args.translate_to == 'vul' or args.translate_to == 'vuln' or args.translate_to == 'vuln id':
     # Find all VULN elements that contain the Rule_Ver/STIG ID value
     vulns = find_vulns(xml_root, specified_arg)
     
