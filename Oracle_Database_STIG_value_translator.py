@@ -42,8 +42,11 @@ cl_parser.usage = '''This program translates any of the following values to its 
  Usage: Oracle_Database_STIG_value_translator.py -f <ckl file> < -s <STIG ID> or -c <CCI> or -ri <Rule ID> or -rn <Rule Name> or -v <Vuln ID> > -t <STIG ID|CCI|Rule ID|Rule Name|Vuln ID>
        
  Note: when using -t and the desired value type to convert to, the use of double quotes around the type might be needed.
- Example: ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "vuln id"
-          ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "stig id"'''
+ Examples: ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "vuln id"
+           ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "stig id"
+           ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "rule id"
+           ./Oracle_Database_STIG_value_translator.py -f <ckl file> -v V-237723 -t "rule name"
+		  '''
 cl_parser.add_argument('-f', '--file', default=sys.stdin, type=argparse.FileType('r'), required=True, help='Specify location of XML formatted STIG ckl file with the full path and filename.')
 cl_parser.add_argument('-c', '--cci', required=False, type=str.upper, help='Specify value of CCI.')
 cl_parser.add_argument('-ri', '--rule_id', required=False, type=str, help='Specify value of Rule ID.')
